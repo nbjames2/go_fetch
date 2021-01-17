@@ -15,7 +15,6 @@ defmodule GoFetch.GitCaller do
       }}
     """}
     %{body: body} = HTTPoison.post!(url, query, headers)
-    IO.puts body
     Poison.decode!(body, keys: :atoms)
   end
 end

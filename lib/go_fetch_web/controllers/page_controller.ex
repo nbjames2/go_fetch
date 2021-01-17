@@ -6,7 +6,7 @@ defmodule GoFetchWeb.PageController do
     html conn, """
       <!doctype html>
       <form method=post action=/getuserinfo>
-        <input type=text name=username placeholder="Enter your Github username" />
+        <input type=text name=username placeholder="Enter your Github username" style="width: 250px;" />
         <button type=submit>Submit</button>
       </form>
     """
@@ -15,24 +15,24 @@ defmodule GoFetchWeb.PageController do
   def get_info(conn, %{"username" => username}) do
     # query github
     data = GoFetch.GitCaller.getRepos(username)
-    IO.inspect(data.data.user)
     
     # pull data out and sanitize result
-    reposHTML = ""
     repos = data.data.user.repositories.nodes
-    repos
-    |> Enum.with_index()
-    |> Enum.each(fn {e, idx} -> 
-      reposHTML = reposHTML <> "<tr><td>#{e.name}</td><td>#{e.updatedAt}</td></tr>" 
-      IO.puts(reposHTML)
+    reposHTML = ""
+    reposHTML = Enum.reduce(repos, "", fn(x, acc)->
+      acc <> """
+        <tr>
+          <td style="border: 1px solid #ccc; padding: 4px 8px;">#{x.name}</td>
+          <td style="border: 1px solid #ccc; padding: 4px 8px;">#{x.updatedAt}</td>
+        </tr>
+      """
     end)
-    
     # build html
     rawHTML = """
     <!doctype html>
     <body>
       <form method=post action=/getuserinfo>
-        <input type=text name=username placeholder="Enter your Github username" />
+        <input type=text name=username placeholder="Enter your Github username" style="width: 250px;" />
         <button type=submit>Submit</button>
       </form>
       <div style="display: flex; align-items: center;">
@@ -48,7 +48,8 @@ defmodule GoFetchWeb.PageController do
         </thead>
         <tbody>
     """
-    rawhtml = rawHTML <> reposHTML <> "</tbody></table></body>"
+    rawHTML = rawHTML <> reposHTML <> "</tbody></table></body>"
+    IO.puts rawHTML
     html conn, rawHTML
   end
 end
