@@ -16,6 +16,14 @@ Prerequisites:
         -Run: sudo port install elixir
     Windows:
       - Download install from `https://github.com/elixir-lang/elixir-windows-setup/releases/download/v2.1/elixir-websetup.exe`
+  * Get Github personal access token:
+    - After logging into Github click on profile in top right and choose 'settings'
+    - Select 'Develop Settings' from the side menu
+    - The select 'Personal access tokens' from the side menu
+    - Click 'Generate new token'
+    - Give it a name and select all of 'repo' and the 'read:user' options
+    - Click 'Generate token' and copy the resulting code
+    - Paste code into the `token` variable in `/lib/go_fetch/git_caller.ex`
 
 To start your Phoenix server:
 

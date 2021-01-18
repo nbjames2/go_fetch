@@ -17,12 +17,12 @@ defmodule GoFetchWeb.PageController do
     data = GoFetch.GitCaller.getRepos(username)
     
     # pull data out and sanitize result
-    repos = data.data.user.repositories.nodes
+    repos = data.data.user.watching.nodes
     reposHTML = ""
     reposHTML = Enum.reduce(repos, "", fn(x, acc)->
       acc <> """
         <tr>
-          <td style="border: 1px solid #ccc; padding: 4px 8px;">#{x.name}</td>
+          <td style="border: 1px solid #ccc; padding: 4px 8px;"><a href=#{x.url}>#{x.name}</a></td>
           <td style="border: 1px solid #ccc; padding: 4px 8px;">#{x.updatedAt}</td>
         </tr>
       """
